@@ -12,7 +12,7 @@ metadata:
   name: backend
   namespace: expense
   # labels of deployment resource
-  labels:  
+  labels:
     app: backend
     tier: backend
     project: expense
