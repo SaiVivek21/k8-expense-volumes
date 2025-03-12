@@ -11,8 +11,8 @@ kind: Deployment
 metadata:
   name: backend
   namespace: expense
-  labels:
-  # lables of deployment resource
+  # labels of deployment resource
+  labels:  
     app: backend
     tier: backend
     project: expense
@@ -28,25 +28,26 @@ spec:
       labels:
         app: backend
         tier: backend
-        project: expense  
+        project: expense
     spec:
       containers:
       - name: nginx
         image: vivekreddy19/backend:1.0.0
         envFrom:
         - configMapRef:
-          name: backend
+            name: backend
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: backend
+  namespace: expense
 spec:
   selector: # labels are used as selectors
     app: backend
     tier: backend
     project: expense
   ports:
-  - protocol: TCP 
+  - protocol: TCP
     port: 8080 # service port
-    targetPort: 8080     
+    targetPort: 8080
