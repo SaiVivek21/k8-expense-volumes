@@ -1,23 +1,23 @@
-# headless service , Normal service , Statefulset
+# Headless service, normal service, StatefulSet
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql-headless
   namespace: expense
   labels:
-    app: mysql 
+    app: mysql
     project: expense
     tier: db
 spec:
   clusterIP: None
   selector:
-    app: mysql 
+    app: mysql
     project: expense
     tier: db
   ports:
   - protocol: TCP
     port: 3306 # service port
-    targetPort: 3306 
+    targetPort: 3306
 ---
 apiVersion: v1
 kind: Service
@@ -25,19 +25,18 @@ metadata:
   name: mysql
   namespace: expense
   labels:
-    app: mysql 
+    app: mysql
     project: expense
     tier: db
 spec:
-  clusterIP: None
   selector:
-    app: mysql 
+    app: mysql
     project: expense
     tier: db
   ports:
   - protocol: TCP
     port: 3306 # service port
-    targetPort: 3306 
+    targetPort: 3306
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -47,27 +46,27 @@ metadata:
 spec:
   selector:
     matchLabels:
-       app: mysql 
-       project: expense
-       tier: db # has to match .spec.template.metadata.labels
+      app: mysql
+      project: expense
+      tier: db # has to match .spec.template.metadata.labels
   serviceName: "mysql-headless"
   replicas: 2 # by default is 1
   minReadySeconds: 10 # by default is 0
   template:
     metadata:
       labels:
-        app: mysql 
+        app: mysql
         project: expense
-        tier: db  # has to match .spec.selector.matchLabels
+        tier: db # has to match .spec.selector.matchLabels
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: mysql
         image: vivekreddy19/mysql:1.0.0
         volumeMounts:
-        - name: www
+        - name: mysql
           mountPath: /var/lib/mysql
-# instead of creating a pvc resource , you can directly provide in statefulset
+  # Instead of creating a PVC resource, you can directly provide in statefulset
   volumeClaimTemplates:
   - metadata:
       name: mysql
@@ -78,4 +77,3 @@ spec:
       resources:
         requests:
           storage: 1Gi
-
