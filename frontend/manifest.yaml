@@ -96,7 +96,7 @@ spec:
               path: nginx.conf
       containers:
       - name: nginx
-        image: vivekreddy/frontend:1.2.0
+        image: joindevops/frontend:1.2.0
         resources:
           # soft limit
           requests:
